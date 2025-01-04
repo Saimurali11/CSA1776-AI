@@ -1,0 +1,35 @@
+import itertools
+
+def calculate_route_distance(route, distance_matrix):
+    """Calculate the total distance of the given route based on the distance matrix."""
+    total_distance = 0
+    for i in range(len(route) - 1):
+        total_distance += distance_matrix[route[i]][route[i+1]]
+    total_distance += distance_matrix[route[-1]][route[0]]  # Return to starting city
+    return total_distance
+
+def traveling_salesman_bruteforce(distance_matrix):
+    """Solve the TSP problem using brute-force approach."""
+    num_cities = len(distance_matrix)
+    cities = list(range(num_cities))
+    shortest_route = None
+    min_distance = float('inf')
+
+    for route in itertools.permutations(cities):
+        current_distance = calculate_route_distance(route, distance_matrix)
+        if current_distance < min_distance:
+            min_distance = current_distance
+            shortest_route = route
+
+    return shortest_route, min_distance
+
+distance_matrix = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+shortest_route, min_distance = traveling_salesman_bruteforce(distance_matrix)
+print(f"Shortest route: {shortest_route}")
+print(f"Minimum distance: {min_distance}")
